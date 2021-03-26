@@ -58,7 +58,13 @@ if __name__ == "__main__":
 
 
 	for i, r in temp.iterrows():
-		if r["REF"] == ".":
+		if r["REF"] == ".": # insertion
 			temp.at[i, 'REF'] = get_refbase(REF_FA, r["#CHROM"], int(r["POS"])-1).capitalize()
+			temp.at[i, 'ALT'] = get_refbase(REF_FA, r["#CHROM"], int(r["POS"])-1).capitalize() + r["ALT"]
+		elif r["ALT"] == ".": # deletion
+			temp.at[i, 'REF'] = get_refbase(REF_FA, r["#CHROM"], int(r["POS"])-2).capitalize() + r["REF"]
+			temp.at[i, 'ALT'] = get_refbase(REF_FA, r["#CHROM"], int(r["POS"])-2).capitalize() 
+			temp.at[i, 'POS'] = int(r["POS"]) - 1
+
 
 	temp.to_csv(args.o_vcf, sep = '\t', index = False, mode = 'a')

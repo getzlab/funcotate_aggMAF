@@ -23,7 +23,7 @@ if __name__ == "__main__":
         # common_task_opts = { "retry" : 2 } # will retry every task up to 5 times
         ) as w:
             # dispatch workflow for every pair in the dataframe
-            w.run(run_name="funcotate_maf", 
+            w.run(run_name="funcotate_maf_fix", 
                   fullmaf = "/mnt/nfs/wgs_ref/merged_fixed.maflite",
                   REF = "/mnt/nfs/wgs_ref/GRCh38.d1.vd1.fa",
                   RCOL = "/mnt/nfs/wgs_ref/cols2remove.txt"

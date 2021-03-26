@@ -45,7 +45,7 @@ def maf2vcf(
         "vcf" : "*.vcf"
       },
       docker = img,
-      resources = { "mem" : "1G" },
+      resources = { "mem" : "2G" },
     )
 
 
