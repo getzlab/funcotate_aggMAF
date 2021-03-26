@@ -25,6 +25,6 @@ with open(args.r) as f:
     cols_to_remove = [line.rstrip() for line in f]
 
 for maf in inputs.split(","):
-	l.append(pd.read_csv(maf, sep = '\t', usecols= lambda x: x not in cols_to_remove))
+	l.append(pd.read_csv(maf, sep = '\t', usecols= lambda x: x not in cols_to_remove, comment="#"))
 
-pd.concat(l).to_csv(args.o, index = False)
+pd.concat(l).to_csv(args.o, index = False, sep = '\t')

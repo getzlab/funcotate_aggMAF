@@ -1,7 +1,7 @@
 from wolf import Task
 import os
 
-img = "gcr.io/broad-getzlab-workflows/maf2vcflite:v2"
+img = "gcr.io/broad-getzlab-workflows/maf2vcflite:v3"
 
 def split_maf(
   fullmaf
@@ -93,7 +93,7 @@ def merge(mafs_in, rcols):
     },
     script = [
       """
-python /app/merge.py -i ${mafs} -o merged_final.maf -r ${rcols}
+python /app/merge.py -i <(head -c-1 ${mafs} | tr '\n' ',') -o merged_final.maf -r ${rcols}
       """
     ],
     outputs= {"final" : "merged_final.maf"},
