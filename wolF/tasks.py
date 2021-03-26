@@ -1,7 +1,7 @@
 from wolf import Task
 import os
 
-img = "gcr.io/broad-getzlab-workflows/maf2vcflite:v3"
+img = "gcr.io/broad-getzlab-workflows/maf2vcflite:v5"
 
 def split_maf(
   fullmaf
@@ -70,6 +70,7 @@ def funcotate(
     -O ${pairname}.maf \
     --output-file-format MAF \
     --data-sources-path /mnt/nfs/wgs_ref/funcotator_dataSources.v1.6.20190124s \
+    --transcript-list /mnt/nfs/wgs_ref/transcriptList.exact_uniprot_matches.AKT1_CRLF2_FGFR1.txt \
     --disable-sequence-dictionary-validation \
     --annotation-default normal_barcode:${pairname}_N \
     --annotation-default tumor_barcode:${pairname}_T \
