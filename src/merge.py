@@ -13,13 +13,18 @@ def parse_args():
 	return args
 
 args = parse_args()
+
+with open(args.i) as f:
+	inputs = f.read()
+
+
 l = []
 
 # read file of removed columns
 with open(args.r) as f:
     cols_to_remove = [line.rstrip() for line in f]
 
-for maf in args.i.split(","):
+for maf in inputs.split(","):
 	l.append(pd.read_csv(maf, sep = '\t', usecols= lambda x: x not in cols_to_remove))
 
 pd.concat(l).to_csv(args.o, index = False)

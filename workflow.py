@@ -13,7 +13,7 @@ def workflow(fullmaf, REF, RCOL):
         ref = REF, 
         )
     merge_task = merge(
-        mafs_in = funcotate_task.get_output("maf", lambda x : ",".join(x)),
+        mafs_in = [funcotate_task.get_output("maf", unbox = False)],
         rcols = RCOL
     )
 

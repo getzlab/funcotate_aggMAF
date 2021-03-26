@@ -1,6 +1,8 @@
 from wolf import Task
 import os
 
+img = "gcr.io/broad-getzlab-workflows/maf2vcflite:v2"
+
 def split_maf(
   fullmaf
 ):
@@ -18,7 +20,7 @@ def split_maf(
           python /app/subset_maf.py ${maf}
           """
       ],
-      docker = "gcr.io/broad-getzlab-workflows/maf2vcflite:v1",
+      docker = img,
       resources = { "mem" : "10G" }
     )
 
@@ -42,7 +44,7 @@ def maf2vcf(
       outputs = {
         "vcf" : "*.vcf"
       },
-      docker = "gcr.io/broad-getzlab-workflows/maf2vcflite:v1",
+      docker = img,
       resources = { "mem" : "1G" },
     )
 
@@ -60,11 +62,12 @@ def funcotate(
       },
       script = [
         """
-        pairname=$(basename ${vcf} .submaf.vcf)
+        pairname=$(basename ${vcf} .vcf)
+        echo ${pairname}
         gatk Funcotator \
     -R ${ref} \
     -V ${vcf} \
-    -O ${pair_name}.maf \
+    -O ${pairname}.maf \
     --output-file-format MAF \
     --data-sources-path /mnt/nfs/wgs_ref/funcotator_dataSources.v1.6.20190124s \
     --disable-sequence-dictionary-validation \
@@ -77,7 +80,7 @@ def funcotate(
         "maf" : "*.maf"
       },
       docker = "gcr.io/broad-getzlab-workflows/gatk4_wolf:v6",
-      resources = { "mem" : "4G" },
+      resources = { "mem" : "6G" },
     )
 
 
@@ -94,6 +97,6 @@ python /app/merge.py -i ${mafs} -o merged_final.maf -r ${rcols}
       """
     ],
     outputs= {"final" : "merged_final.maf"},
-    docker = "gcr.io/broad-getzlab-workflows/maf2vcflite:v1",
+    docker = img,
     resources = { "mem" : "10G" },
   )
