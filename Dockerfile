@@ -1,4 +1,4 @@
-FROM gcr.io/broad-getzlab-workflows/base_image:v0.0.2
+FROM gcr.io/broad-getzlab-workflows/snvmerger:v14
 
 WORKDIR build
 # build steps go here
@@ -6,4 +6,4 @@ WORKDIR build
 
 WORKDIR /app
 ENV PATH=$PATH:/app
-COPY <your script> .
+COPY src/* ./
