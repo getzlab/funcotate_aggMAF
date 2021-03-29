@@ -28,3 +28,4 @@ if __name__ == "__main__":
                   REF = "/mnt/nfs/wgs_ref/GRCh38.d1.vd1.fa",
                   RCOL = "/mnt/nfs/wgs_ref/cols2remove.txt"
             )
+            # 

@@ -98,6 +98,6 @@ python /app/merge.py -i <(head -c-1 ${mafs} | tr '\n' ',') -o merged_final.maf -
       """
     ],
     outputs= {"final" : "merged_final.maf"},
-    docker = img,
+    docker = "gcr.io/broad-getzlab-workflows/maf2vcflite:v6",
     resources = { "mem" : "10G" },
   )
