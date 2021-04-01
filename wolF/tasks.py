@@ -92,11 +92,12 @@ def merge(mafs_in, rcols):
         inputs={"mafs": mafs_in, "rcols": rcols},
         script=[
             """
-skiplines=$(grep '##' out.maf | wc -l)
+skiplines=$(grep '##' $(head -n1 ${mafs}) | wc -l)
+echo $skiplines
 python /app/merge.py -i <(head -c-1 ${mafs} | tr '\n' ',') -o merged_final.maf -r ${rcols} -skip $(( $skiplines + 1 ))
       """
         ],
         outputs={"final": "merged_final.maf"},
-        docker="gcr.io/broad-getzlab-workflows/maf2vcflite:v6",
+        docker=img,
         resources={"mem": "10G"},
     )
