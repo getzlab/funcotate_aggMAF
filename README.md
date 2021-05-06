@@ -21,4 +21,3 @@ The workflow first split the aggregated MAF to submafs with only calls from a sa
 ## Be cautious!
 
 This is not a production workflow! e.g. there's VCF header for reference checks -- so it would become user's responsibility to make sure the correct ref.fasta file is used.
-

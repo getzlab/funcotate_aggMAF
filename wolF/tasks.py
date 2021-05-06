@@ -56,39 +56,40 @@ gatk LeftAlignAndTrimVariants -R ${ref} -V ${vcf} -O ${pairname}.fixed.vcf
     )
 
 
-def funcotate(vcf, ref):
+def funcotate(vcf, ref, output_format):
     # preprocessing logic can go here
     return Task(
-        name="funcotate",
+        name="funcotate_{}".format(output_format),
         inputs={
             "ref": ref,
             "vcf": vcf,
+            "output_format": output_format,
+            "suffix": output_format.lower(),
         },
         script=[
             """
-        pairname=$(basename ${vcf} .vcf)
+        pairname=$(basename ${vcf} .fixed.vcf)
         echo ${pairname}
         gatk Funcotator \
     -R ${ref} \
     -V ${vcf} \
-    -O ${pairname}.maf \
-    --output-file-format MAF \
+    -O ${pairname}.${suffix} \
+    --output-file-format ${output_format} \
     --data-sources-path /mnt/nfs/wgs_ref/funcotator_dataSources.v1.6.20190124s \
-    --transcript-list /mnt/nfs/wgs_ref/transcriptList.exact_uniprot_matches.AKT1_CRLF2_FGFR1.txt \
     --annotation-default normal_barcode:${pairname}_N \
     --annotation-default tumor_barcode:${pairname}_T \
     --ref-version hg38
-        """
+        """,
         ],
-        outputs={"maf": "*.maf"},
+        outputs={output_format: "*.{}".format(output_format.lower())},
         docker="gcr.io/broad-getzlab-workflows/gatk4_wolf:v6",
         resources={"mem": "6G"},
     )
 
 
-def merge(mafs_in, rcols):
+def merge_maf(mafs_in, rcols):
     return Task(
-        name="merge_funcotated",
+        name="merge_funcotated_maf",
         inputs={"mafs": mafs_in, "rcols": rcols},
         script=[
             """
@@ -101,3 +102,4 @@ python /app/merge.py -i <(head -c-1 ${mafs} | tr '\n' ',') -o merged_final.maf -
         docker=img,
         resources={"mem": "10G"},
     )
+
